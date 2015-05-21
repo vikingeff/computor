@@ -57,6 +57,20 @@ class Computor
 			return ("One parenthesis or more is open without being closed or closed without being opened.");
 		}
 	};
+
+	public : class CharsException : public std::exception
+	{
+	public:
+		//GradeTooLowException();
+		//GradeTooLowException(GradeTooLowException const & ref);
+		//virtual ~GradeTooLowException() throw();
+
+		//GradeTooLowException &			operator=(GradeTooLowException const & source);
+		virtual const char* what() const throw ()
+		{
+			return ("One character at least isn't authorised.");
+		}
+	};
 };
 
 #endif

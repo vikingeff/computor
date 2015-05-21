@@ -59,49 +59,45 @@ void			check_pa(std::string& str)
 		throw Computor::ParenthesisException();
 }
 
-int				check_constistancy(std::string& str)
+void			check_constistancy(std::string& str)
 {
-	(void)str;
-	return 0;
+	std::string 	authorised[]={"x", "X", "²", "^", "=", "(", ")", "+", "-", "*", "/", " "};
+	int 			loop=0;
+
+	for (loop=0; loop<(int)str.size(); loop++)
+	{
+		int index=0;
+		if (str[loop]>=48 && str[loop]<=57)
+			continue;
+		for (index=0; index<12; index++)
+		{
+			if (str[loop]==authorised[index][0])
+				break;
+		}
+		if (index==12)
+			throw Computor::CharsException();
+	}
+
 }
 
 int main(int argc, char **argv)
 {
-	std::string authorised[]={"x", "X", "²", "^", "=", "(", ")", "+", "-", "*", "/", " "};
+	
 	std::string cleaned;
 
 	if (argc==2)
 	{
 		std::string equation=argv[1];
-		int loop=0;
 
 		equation = trim_inplace(equation);
 		cleaned = equation;
 		cleaned.erase(remove_if(cleaned.begin(), cleaned.end(), isspace), cleaned.end());
 		std::cout << YELLOW"Your entry : " << GRAY<<equation<<NC << std::endl;
 		std::cout << CYAN"Cleaned entry : " << GRAY<<cleaned<<NC << std::endl;
-		for (loop=0; loop<(int)equation.size(); loop++)
-		{
-			int index=0;
-			if (equation[loop]>=48 && equation[loop]<=57)
-				continue;
-			for (index=0; index<12; index++)
-			{
-//				std::cout<<equation[loop]<< " - "<<authorised[index][0]<<std::endl;
-				if (equation[loop]==authorised[index][0])
-				{
-//					std::cout<<"ok"<<std::endl;
-					break;
-				}	
-			}
-			if (index==12)
-			{
-				std::cout << RED"Error : " << GRAY"This is not a valid equation."NC << std::endl;
-				return 1;
-			}
-		}
+		
 		try
 		{
+			check_constistancy(cleaned);
 			check_eq(cleaned);
 			check_pa(cleaned);
 		}
@@ -113,9 +109,14 @@ int main(int argc, char **argv)
 		catch (Computor::ParenthesisException &e)
 		{
 			std::cout << RED"Error : " << GRAY"This is not a valid equation : "<<e.what()<<NC << std::endl;
-			return 2;
+			return 3;
 		}
-		if (loop==(int)equation.size())
+		catch (Computor::CharsException &e)
+		{
+			std::cout << RED"Error : " << GRAY"This is not a valid equation : "<<e.what()<<NC << std::endl;
+			return 4;
+		}
+		//if (loop==(int)equation.size())
 			std::cout << GREEN"Succes : " << GRAY"This is a valid equation."NC << std::endl;
 	}
 	else
