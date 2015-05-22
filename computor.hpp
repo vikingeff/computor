@@ -71,6 +71,20 @@ class Computor
 			return ("One character at least isn't authorised.");
 		}
 	};
+
+	public : class PowerException : public std::exception
+	{
+	public:
+		//GradeTooLowException();
+		//GradeTooLowException(GradeTooLowException const & ref);
+		//virtual ~GradeTooLowException() throw();
+
+		//GradeTooLowException &			operator=(GradeTooLowException const & source);
+		virtual const char* what() const throw ()
+		{
+			return ("The equation can't be of third degree or more.");
+		}
+	};
 };
 
 #endif

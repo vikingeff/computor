@@ -27,16 +27,29 @@ std::string		&trim_inplace(std::string& s, const std::string& delimiters = " \f\
 	return trim_left_inplace(trim_right_inplace(s, delimiters), delimiters);
 }
 
-void			check_eq(std::string& str)
+void			check_pow(std::string &str)
 {
 	std::size_t		found=0;
+
+	found=str.find("^");
+	if (found < str.size())
+	{
+		if (str[found+1]<48 || str[found+1]>50)
+			throw Computor::PowerException();
+	}
+}
+
+void			check_equals(std::string &str)
+{
+	std::size_t		found=0;
+
 	found=str.find("=");
 	found=str.find("=", found+1);
 	if (found<str.size())
 		throw Computor::EqualException();
 }
 
-void			check_pa(std::string& str)
+void			check_parenthesis(std::string &str)
 {
 	std::size_t		found=0;
 	int				index=0;
@@ -59,7 +72,7 @@ void			check_pa(std::string& str)
 		throw Computor::ParenthesisException();
 }
 
-void			check_constistancy(std::string& str)
+void			check_constistancy(std::string &str)
 {
 	std::string 	authorised[]={"x", "X", "²", "^", "=", "(", ")", "+", "-", "*", "/", " "};
 	int 			loop=0;
@@ -98,8 +111,9 @@ int main(int argc, char **argv)
 		try
 		{
 			check_constistancy(cleaned);
-			check_eq(cleaned);
-			check_pa(cleaned);
+			check_equals(cleaned);
+			check_parenthesis(cleaned);
+			check_pow(cleaned);
 		}
 		catch (Computor::EqualException &e)
 		{
@@ -115,6 +129,11 @@ int main(int argc, char **argv)
 		{
 			std::cout << RED"Error : " << GRAY"This is not a valid equation : "<<e.what()<<NC << std::endl;
 			return 4;
+		}
+		catch (Computor::PowerException &e)
+		{
+			std::cout << RED"Error : " << GRAY"This is not a valid equation : "<<e.what()<<NC << std::endl;
+			return 5;
 		}
 		//if (loop==(int)equation.size())
 			std::cout << GREEN"Succes : " << GRAY"This is a valid equation."NC << std::endl;
