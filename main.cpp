@@ -96,7 +96,8 @@ void			check_constistancy(std::string &str)
 int main(int argc, char **argv)
 {
 	
-	std::string cleaned;
+	std::string 	cleaned;
+	int				vreturn = 0;
 
 	if (argc==2)
 	{
@@ -115,30 +116,55 @@ int main(int argc, char **argv)
 			check_parenthesis(cleaned);
 			check_pow(cleaned);
 		}
-		catch (Computor::EqualException &e)
+		catch (std::exception &error)
 		{
-			std::cout << RED"Error : " << GRAY"This is not a valid equation : "<<e.what()<<NC << std::endl;
-			return 2;
+			std::cout << RED"Error : " << GRAY"This is not a valid equation : "<<error.what()<<NC << std::endl;
+			try
+			{
+				Computor::EqualException &buffer = dynamic_cast<Computor::EqualException &>(error);
+				(void)buffer;
+				vreturn=2;
+			}
+			catch (std::exception &dcast)
+			{
+				try
+				{
+					Computor::ParenthesisException &buffer2 = dynamic_cast<Computor::ParenthesisException &>(error);
+					(void)buffer2;
+					vreturn=3;
+				}
+				catch (std::exception &dcast)
+				{
+					try
+					{
+						Computor::CharsException & buffer3 = dynamic_cast<Computor::CharsException &>(error);
+						(void)buffer3;
+						vreturn=4;
+					}
+					catch (std::exception &dcast)
+					{
+						try
+						{
+							Computor::PowerException & buffer4 = dynamic_cast<Computor::PowerException &>(error);
+							(void)buffer4;
+							vreturn=5;
+						}
+						catch (std::exception &dcast)
+						{
+							vreturn=6;
+						}
+					}
+				}
+			}
+			return (vreturn);
 		}
-		catch (Computor::ParenthesisException &e)
-		{
-			std::cout << RED"Error : " << GRAY"This is not a valid equation : "<<e.what()<<NC << std::endl;
-			return 3;
-		}
-		catch (Computor::CharsException &e)
-		{
-			std::cout << RED"Error : " << GRAY"This is not a valid equation : "<<e.what()<<NC << std::endl;
-			return 4;
-		}
-		catch (Computor::PowerException &e)
-		{
-			std::cout << RED"Error : " << GRAY"This is not a valid equation : "<<e.what()<<NC << std::endl;
-			return 5;
-		}
-		//if (loop==(int)equation.size())
 			std::cout << GREEN"Succes : " << GRAY"This is a valid equation."NC << std::endl;
 	}
 	else
+	{
 		std::cout << RED"Usage : " << GRAY"./computor equation of maximum degree 2"NC << std::endl;
-	return 0;
+		vreturn = 1;
+	}
+	std::cout<<vreturn<<std::endl;
+	return (vreturn);
 }
