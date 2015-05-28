@@ -6,7 +6,7 @@
 #    By: gleger <gleger@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/18 17:03:33 by gleger            #+#    #+#              #
-#    Updated: 2015/05/21 17:14:51 by gleger           ###   ########.fr        #
+#    Updated: 2015/05/28 13:03:47 by gleger           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,11 @@ NAME =	computor
 
 HEADERS = -I .
 
-SRC =	main.cpp
+SRC =	main.cpp \
+		Operator.class.cpp \
 
-HPP =	computor.hpp
+HPP =	computor.hpp \
+		Operator.class.hpp \
 
 OBJ =	$(SRC:.cpp=.o)
  

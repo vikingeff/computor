@@ -82,7 +82,7 @@ class Computor
 		//GradeTooLowException &			operator=(GradeTooLowException const & source);
 		virtual const char* what() const throw ()
 		{
-			return ("The equation can't be of third degree or more.");
+			return ("The equation must be at most a second degree.");
 		}
 	};
 };

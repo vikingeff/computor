@@ -29,13 +29,17 @@ std::string		&trim_inplace(std::string& s, const std::string& delimiters = " \f\
 
 void			check_pow(std::string &str)
 {
-	std::size_t		found=0;
+	int				found=str.find("^");
 
-	found=str.find("^");
-	if (found < str.size())
+	while (found<(int)str.size())
 	{
-		if (str[found+1]<48 || str[found+1]>50)
-			throw Computor::PowerException();
+		if (found < (int)str.size())
+		{
+			std::cout<<"found in check_pow : "<<found<<" - "<<str[found+1]<<std::endl;
+			if (str[found+1]<48 || str[found+1]>51)
+				throw Computor::PowerException();
+		}
+		found=str.find("^", found+1);
 	}
 }
 
@@ -67,7 +71,7 @@ void			check_parenthesis(std::string &str)
 		index--;
 		found=str.find(")", found+1);
 	}
-	std::cout<<index<<std::endl;
+	std::cout<<"diff between parenthesis closed or open : "<<index<<std::endl;
 	if (index!=0)
 		throw Computor::ParenthesisException();
 }
@@ -93,7 +97,27 @@ void			check_constistancy(std::string &str)
 
 }
 
-int main(int argc, char **argv)
+void			check_operand(std::string &str)
+{
+	(void)str;
+}
+
+void			simplify(std::string &str)
+{
+	// int				xval=0;
+	// int				x2val=0;
+	// int				intval=0;
+	std::size_t		found=0;
+	//int				index=0;
+
+	found=str.find("x^0");
+	if (found < str.size())
+	{
+		std::cout<<"char after ^ simplified : "<<str[found]<<std::endl;
+	}
+}
+
+int 			main(int argc, char **argv)
 {
 	
 	std::string 	cleaned;
@@ -115,6 +139,8 @@ int main(int argc, char **argv)
 			check_equals(cleaned);
 			check_parenthesis(cleaned);
 			check_pow(cleaned);
+			//check_operand(cleaned);
+			simplify(cleaned);
 		}
 		catch (std::exception &error)
 		{
@@ -160,11 +186,11 @@ int main(int argc, char **argv)
 		}
 			std::cout << GREEN"Succes : " << GRAY"This is a valid equation."NC << std::endl;
 	}
-	else
-	{
-		std::cout << RED"Usage : " << GRAY"./computor equation of maximum degree 2"NC << std::endl;
-		vreturn = 1;
-	}
-	std::cout<<vreturn<<std::endl;
+	// else
+	// {
+	// 	std::cout << RED"Usage : " << GRAY"./computor equation of maximum degree 2"NC << std::endl;
+	// 	vreturn = 1;
+	// }
+	std::cout<<"vreturn : "<<vreturn<<std::endl;
 	return (vreturn);
 }
