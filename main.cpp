@@ -29,13 +29,12 @@ std::string		&trim_inplace(std::string& s, const std::string& delimiters = " \f\
 
 void			check_pow(std::string &str)
 {
-	int				found=str.find("^");
-
-	while (found<(int)str.size())
+	std::size_t		found=str.find("^");
+	
+	while (found<str.size())
 	{
-		if (found < (int)str.size())
+		if (found < str.size())
 		{
-			std::cout<<"found in check_pow : "<<found<<" - "<<str[found+1]<<std::endl;
 			if (str[found+1]<48 || str[found+1]>51)
 				throw Computor::PowerException();
 		}
@@ -113,7 +112,7 @@ void			simplify(std::string &str)
 	found=str.find("x^0");
 	if (found < str.size())
 	{
-		std::cout<<"char after ^ simplified : "<<str[found]<<std::endl;
+		std::cout<<"char after ^ simplified : "<<str[found+3]<<std::endl;
 	}
 }
 
